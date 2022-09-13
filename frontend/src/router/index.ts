@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ArticleListView from "../views/ArticleListView.vue";
 import AboutView from "../views/AboutView.vue";
-import ArticleView from "../views/Article.vue";
+import ArticleView from "../views/ArticleView.vue";
 import EssayView from "../views/EssayView.vue";
 import NoveletteView from "../views/NoveletteView.vue";
 import PoemView from "../views/PoemView.vue";
@@ -62,15 +62,6 @@ const router = createRouter({
       name: "poem",
       component: PoemView,
     },
-
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
   ],
 });
 

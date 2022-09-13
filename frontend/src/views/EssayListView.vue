@@ -5,5 +5,7 @@ import EssayList from '../components/EssayList.vue'
 
 <template>
   <Nav />
-  <EssayList />
+  <suspense>
+    <EssayList />
+  </suspense>  
 </template>

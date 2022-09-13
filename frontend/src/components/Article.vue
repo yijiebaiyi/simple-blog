@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import api from '@/api';
 import { defineProps, markRaw } from 'vue'
-import {remark} from 'remark'
-import remarkGfm from 'remark-gfm'
-import remarkToc from 'remark-toc'
 import markdownIt from "markdown-it"
   
 // 接收父组件传递过来的值
@@ -12,18 +9,6 @@ const id = props.id as number;
 
 const articlesDetailApiResult = await api.ArticlesDetail(id)
 const articlesDetail  = articlesDetailApiResult?.data;
-
-
-// const html = marked.parse('# Marked in Node.js\n\nRendered by **marked**.');
-
-// console.log(html)
-
-// const htmlContent = String(await remark()
-//     .use(remarkGfm)
-//     .use(remarkToc)
-//     .process(articlesDetail.article_content))
-
-// articlesDetail.article_content = htmlContent;
 
 let md = new markdownIt();
 var htmlContent = md.render(articlesDetail.article_content);
@@ -37,8 +22,8 @@ articlesDetail.article_content = htmlContent;
     <div>
       <div class="bg-light p-5 rounded">
         <div class="col-sm-8 mx-auto">
-          <h1>{{ articlesDetail.article_title }}</h1>
-          {{articlesDetail.article_content}}
+          <h1>{{articlesDetail.article_title}}</h1>
+          <div v-html="articlesDetail.article_content"></div>
         </div>
       </div>
 
@@ -165,9 +150,4 @@ articlesDetail.article_content = htmlContent;
     -webkit-overflow-scrolling: touch;
   }
 </style>
-<!-- <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
-<!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/navbars/" /> -->
-<!-- <link href="navbar.css" rel="stylesheet" /> -->
-<!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> -->
-
 

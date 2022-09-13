@@ -1,3 +1,13 @@
+<script setup lang="ts">
+  import api from '@/api';
+  const articlesListApiResult = await api.ArticlesList()
+  const status = articlesListApiResult?.code;
+  const articlesList  = articlesListApiResult?.data;
+
+  function getLocationHref(id:number) {
+    return location.href=`/poem/${id}`;
+  }
+</script>
 
 <template>
   <div class="container">
@@ -6,67 +16,16 @@
         <div class="col-sm-8 mx-auto">
           <h1>小诗</h1>
           <p>
-            <div class="card-group">
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-            </div>
-            <div class="card-group">
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-              </div>
-              <div class="card">
-                <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col" v-for="article in articlesList">
+                <div class="card" @click=(getLocationHref(article.id))>
+                  <img src="https://w.wallhaven.cc/full/j3/wallhaven-j3m8y5.png" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{article.article_title}}</h5>
+                    <p class="card-text">
+                      {{article.article_desc}}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -5,6 +5,8 @@
 
 <template>
   <Nav />
-  <PoemList />
+  <suspense>
+    <PoemList />
+  </suspense>
 </template>
   

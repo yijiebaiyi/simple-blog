@@ -38,7 +38,10 @@ func init() {
 		apiIndex.GET("/articles", index.ArticlesList)
 		// 文章详情
 		apiIndex.GET("/articles/:id", index.ArticlesDetail)
-
+		// 文章评论列表
+		apiIndex.GET("/comments/:article_id", index.CommentsListByArticleId)
+		// 文章评论发表
+		apiIndex.POST("/comments", index.CommentsCreate)
 	}
 
 	apiAdmin := Router.Group("/api/admin")

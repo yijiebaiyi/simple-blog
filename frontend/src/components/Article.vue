@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import api from '@/api';
-import { defineProps, markRaw } from 'vue'
+import { defineProps, markRaw, proxyRefs, toRef, toRefs } from 'vue'
 import markdownIt from "markdown-it"
-  
+
 // 接收父组件传递过来的值
 const props = defineProps(['id'])
 const id = props.id as number;
 
 const articlesDetailApiResult = await api.ArticlesDetail(id)
 const articlesDetail  = articlesDetailApiResult?.data;
-
 let md = new markdownIt();
 var htmlContent = md.render(articlesDetail.article_content);
-console.log(md.render(''))
 articlesDetail.article_content = htmlContent;
 
+const articlesCommentsResult = await api.ArticlesCommentsList(id);
+const articlesComments = articlesCommentsResult?.data;
+
+function commentCreate(){
+  let formData = new FormData();
+}
 </script>
 
 <template>
@@ -29,34 +33,15 @@ articlesDetail.article_content = htmlContent;
 
       <div class="my-3 p-3 bg-body rounded shadow-sm">
     <h6 class="border-bottom pb-2 mb-0">最近评论</h6>
-    <div class=" text-muted pt-3">
+    <div class="text-muted pt-3" v-for="comment in articlesComments" >
       <p class="pb-3 mb-0 small lh-sm border-bottom">
-        <strong class="d-block text-gray-dark"><i>张三疯</i> &nbsp说道:</strong>
-        地维赖以立，天柱赖以尊
+        <strong class="d-block text-gray-dark"><i><a v-bind:href="comment.comment_url" >{{comment.comment_name}}</a></i> &nbsp说道:</strong>
+        {{comment.comment_content}}
         <small class="d-block text-end mt-3">
-          <span href="#">2020-01-01 20:20</span>
+          <span href="#">{{comment.comment_create_on}}</span>
         </small>
       </p>
     </div>
-    <div class="text-muted pt-3">
-      <p class="pb-3 mb-0 small lh-sm border-bottom">
-        <strong class="d-block text-gray-dark"><i>周星星</i> &nbsp说道:</strong>
-        请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？请问博主，如何看待叙利亚的局势？
-        <small class="d-block text-end mt-3">
-          <span href="#">2020-01-01 20:20</span>
-        </small>
-      </p>
-    </div>
-      <div class="text-muted pt-3">
-        <p class="pb-3 mb-0 small lh-sm border-bottom">
-          <strong class="d-block text-gray-dark"><i>王七七</i> &nbsp说道:</strong>
-          请问博主，如何看待最近的中美关系？
-          <small class="d-block text-end mt-3">
-            <span href="#">2020-01-01 20:20</span>
-          </small>
-        </p>
-      </div>
-
     </div>
 
     <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">我也来整两句</button>
@@ -71,25 +56,25 @@ articlesDetail.article_content = htmlContent;
             <form>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠怎么称呼:</label>
-                <input type="text" class="form-control" id="recipient-name"  placeholder="您的名字是？（必填）">
+                <input type="text" class="form-control" id="recipient-name" name="Name"  placeholder="您的名字是？（必填）">
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠怎么联系您:</label>
-                <input type="text" class="form-control" id="recipient-name" placeholder="邮箱是？（非必填）">
+                <input type="text" class="form-control" name="Email" id="recipient-name" placeholder="邮箱是？（非必填）">
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠在哪里可以找到您:</label>
-                <input type="text" class="form-control" id="recipient-name" placeholder="个人站地址是？（非必填）">
+                <input type="text" class="form-control"  name="Url" id="recipient-name" placeholder="个人站地址是？（非必填）">
               </div>
               <div class="mb-3">
                 <label for="message-text" class="col-form-label">大侠请留言:</label>
-                <textarea class="form-control" id="message-text"  placeholder="高低整两句（必填）"></textarea>
+                <textarea class="form-control" id="message-text"  name="Cotent" placeholder="高低整两句（必填）"></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-dark">Send message</button>
+            <button type="button" class="btn btn-dark" @click=(commentCreate()) >Send message</button>
           </div>
         </div>
       </div>

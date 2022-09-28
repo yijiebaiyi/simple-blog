@@ -19,15 +19,18 @@ func CommentsListByArticleId(ctx *gin.Context) {
 }
 
 func CommentsCreate(ctx *gin.Context) {
+
 	requestData := make(map[string]interface{})
 	ctx.BindJSON(&requestData)
 
 	comment := models.Comment{}
 	comment.Content = requestData["Content"].(string)
 	comment.Name = requestData["Name"].(string)
+	// comment.ArticleId = requestData["articleId"]
 
 	models.CommentsCreate(comment)
 	ctx.Next()
 	ctx.Header("Access-Control-Allow-Origin", "*")
+
 	JsonReturn(ctx, e.SUCCESS, "", nil)
 }

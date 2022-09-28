@@ -1,11 +1,39 @@
 <script setup lang="ts">
 import api from '@/api';
-import { defineProps, markRaw, proxyRefs, toRef, toRefs } from 'vue'
+import { defineProps, markRaw, proxyRefs, reactive, toRef, toRefs } from 'vue'
 import markdownIt from "markdown-it"
+
+/*
+
+  props:{
+    id:{
+      type:Number,
+      default:0
+    }
+  },
+  
+  */
+
 
 // 接收父组件传递过来的值
 const props = defineProps(['id'])
 const id = props.id as number;
+
+const state = reactive({
+  articleId: id,
+  Content: "",
+  Name: "",
+  Url: "",
+  Email: "",
+  Tel: ""
+})
+/*
+
+    "Content":"博主好棒，赞",
+    "Name":"展达s",
+    "content":"博主好棒，赞",
+    "name":"展达"
+*/
 
 const articlesDetailApiResult = await api.ArticlesDetail(id)
 const articlesDetail  = articlesDetailApiResult?.data;
@@ -16,8 +44,10 @@ articlesDetail.article_content = htmlContent;
 const articlesCommentsResult = await api.ArticlesCommentsList(id);
 const articlesComments = articlesCommentsResult?.data;
 
-function commentCreate(){
-  let formData = new FormData();
+async function commentCreate(){
+  if (await api.ArticlesCommentsCreate(state)) {
+
+  }
 }
 </script>
 
@@ -56,19 +86,20 @@ function commentCreate(){
             <form>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠怎么称呼:</label>
-                <input type="text" class="form-control" id="recipient-name" name="Name"  placeholder="您的名字是？（必填）">
+                <input type="text" class="form-control" v-model="state.Name" id="recipient-name" name="Name"  placeholder="您的名字是？（必填）">
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠怎么联系您:</label>
-                <input type="text" class="form-control" name="Email" id="recipient-name" placeholder="邮箱是？（非必填）">
+                <input type="text" class="form-control" v-model="state.Email" name="Email" id="recipient-name" placeholder="邮箱是？（非必填）">
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">大侠在哪里可以找到您:</label>
-                <input type="text" class="form-control"  name="Url" id="recipient-name" placeholder="个人站地址是？（非必填）">
+                <input type="text" v-model="state.Url" class="form-control"  name="Url" id="recipient-name" placeholder="个人站地址是？（非必填）">
               </div>
               <div class="mb-3">
                 <label for="message-text" class="col-form-label">大侠请留言:</label>
-                <textarea class="form-control" id="message-text"  name="Cotent" placeholder="高低整两句（必填）"></textarea>
+                <textarea class="form-control" id="message-text" 
+                v-model="state.Content" name="Cotent" placeholder="高低整两句（必填）"></textarea>
               </div>
             </form>
           </div>

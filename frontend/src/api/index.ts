@@ -28,11 +28,14 @@ const api: ApiMethodList = {
   async ArticlesCommentsCreate(requestData: commentAttributes) {
     const requestOptions = {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestData),
     };
     const requestUrl: string = "http://localhost:8000/api/index/comments";
-    return await (await fetch(requestUrl, requestOptions)).json();
+
+    fetch(requestUrl, requestOptions as RequestInit);
+    return true;
   },
 
   async ArticlesDetail(id: number) {

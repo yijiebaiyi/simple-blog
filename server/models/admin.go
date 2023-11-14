@@ -6,14 +6,14 @@ import (
 )
 
 const (
-	ADMIN_STATE_ALLOW = 10
+	ADMIN_STATE_ALLOW     = 10
 	ADMIN_STATE_FORBIDDEN = 20
 )
 
 type Admin struct {
 	Model
-	AdminName     string `json:"admin_name"`
-	AdminPassword string `json:"admin_password"`
+	AdminName     string `gorm:"not null" json:"admin_name"`
+	AdminPassword string `gorm:"not null" json:"admin_password"`
 	AdminState    int    `json:"admin_state"`
 	LastLoginTime int    `json:"last_login_time"`
 	LastLoginIp   int    `json:"last_login_ip"`

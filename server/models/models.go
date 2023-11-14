@@ -3,9 +3,10 @@ package models
 import (
 	"fmt"
 	"gin_admin/pkg/setting"
+	"log"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"log"
 )
 
 var db *gorm.DB
@@ -50,6 +51,7 @@ func init() {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
+	db.AutoMigrate(&Ad{}, &Admin{}, &Article{}, &Class{}, &Comment{}, &MessageBoard{}, &Tag{}, &Website{})
 }
 
 func CloseDB() {

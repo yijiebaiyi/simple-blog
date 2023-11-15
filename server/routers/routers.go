@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/gob"
+	"gin_admin/middleware/hander"
 	"gin_admin/models"
 	"gin_admin/pkg/setting"
 	"gin_admin/routers/api/admin"
@@ -20,6 +21,8 @@ func init() {
 	Router.Use(gin.Logger())
 
 	Router.Use(gin.Recovery())
+
+	Router.Use(hander.HandelHeader())
 
 	gin.SetMode(setting.RunMode)
 

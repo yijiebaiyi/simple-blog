@@ -34,3 +34,14 @@ const (
 	ERROR_AUTH_TOKEN               = 20003
 	ERROR_AUTH                     = 20004
 )
+
+func StatusText(code int) string {
+	switch code {
+	case SUCCESS:
+		return "success"
+	case ERROR:
+		return "error"
+	default:
+		return ""
+	}
+}

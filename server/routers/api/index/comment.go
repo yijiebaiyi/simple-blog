@@ -10,27 +10,38 @@ import (
 	"github.com/unknwon/com"
 )
 
+type CommentsCreateRequest struct {
+	Content   string `json:"content"`
+	Url       string `json:"url"`
+	Email     string `json:"email"`
+	Tel       string `json:"tel"`
+	Name      string `json:"name"`
+	ArticleId int    `json:"articleId"`
+}
+
 func CommentsListByArticleId(ctx *gin.Context) {
 	id := com.StrTo(ctx.Param("article_id")).MustInt()
 	comments := models.CommentsListByArticleId(util.GetPageOffset(ctx), setting.PageSize, id)
-	ctx.Next()
-	ctx.Header("Access-Control-Allow-Origin", "*")
 	JsonReturn(ctx, e.SUCCESS, "", comments)
 }
 
 func CommentsCreate(ctx *gin.Context) {
-
-	requestData := make(map[string]interface{})
-	ctx.BindJSON(&requestData)
+	var err error
+	var requestData CommentsCreateRequest
+	err = ctx.BindJSON(&requestData)
+	if err != nil {
+		AbortReturn(ctx, e.ERROR, "ctx异常", err)
+	}
 
 	comment := models.Comment{}
-	comment.Content = requestData["Content"].(string)
-	comment.Name = requestData["Name"].(string)
-	// comment.ArticleId = requestData["articleId"]
+	comment.Content = requestData.Content
+	comment.Name = requestData.Name
+	comment.Tel = requestData.Tel
+	comment.Email = requestData.Email
+	comment.Url = requestData.Url
+	comment.ArticleId = requestData.ArticleId
+	comment.State = models.CommentStateEnum_Enable
 
 	models.CommentsCreate(comment)
-	ctx.Next()
-	ctx.Header("Access-Control-Allow-Origin", "*")
-
 	JsonReturn(ctx, e.SUCCESS, "", nil)
 }

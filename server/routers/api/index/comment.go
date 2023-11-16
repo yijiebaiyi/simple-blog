@@ -26,6 +26,7 @@ func CommentsListByArticleId(ctx *gin.Context) {
 }
 
 func CommentsCreate(ctx *gin.Context) {
+
 	var err error
 	var requestData CommentsCreateRequest
 	err = ctx.BindJSON(&requestData)

@@ -14,7 +14,7 @@ const (
 func (h *CommonResponseHandler) CodeText(code int) string {
 	switch code {
 	case CODE_SUCCESS:
-		return "success"
+		return "成功"
 	case CODE_ERROR_SERVER:
 		return "系统错误"
 	case CODE_BAD_REQUEST:

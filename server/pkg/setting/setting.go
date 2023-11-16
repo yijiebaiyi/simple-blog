@@ -1,9 +1,10 @@
 package setting
 
 import (
-	"github.com/go-ini/ini"
 	"log"
 	"time"
+
+	"github.com/go-ini/ini"
 )
 
 var (
@@ -71,5 +72,5 @@ func LoadApp() {
 	Md5Salt = sec.Key("MD5_SALT").MustString("")
 	CookieSecret = sec.Key("COOKIE_SECRET").MustString("cookie_secret")
 	SessionName = sec.Key("SESSION_NAME").MustString("session_name")
-	PageSize = sec.Key("PAGE_SIZE").MustInt(10)
+	PageSize = sec.Key("PAGE_SIZE").MustInt(100)
 }

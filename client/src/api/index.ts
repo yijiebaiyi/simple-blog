@@ -1,44 +1,55 @@
 export interface commentAttributes {
   articleId: number;
-  Content: string;
-  Name: string;
-  Url?: string;
-  Email?: string;
-  Tel?: string;
+  content: string;
+  name: string;
+  url?: string;
+  email?: string;
+  tel?: string;
+}
+
+export const CODE_STATUS_OK = 200;
+export interface CommonResponser {
+  code: number;
+  message: string;
+  data: any;
 }
 export interface ApiMethodList {
-  ArticlesList(): any;
-  ArticlesCommentsList(articleId: number): any;
-  ArticlesCommentsCreate(comment: commentAttributes): any;
-  ArticlesDetail(id: number): any;
+  ArticlesList(): Promise<CommonResponser>;
+  ArticlesCommentsList(articleId: number): Promise<CommonResponser>;
+  ArticlesCommentsCreate(comment: commentAttributes): Promise<CommonResponser>;
+  ArticlesDetail(id: number): Promise<CommonResponser>;
 }
 
 const api: ApiMethodList = {
-  async ArticlesList() {
+  async ArticlesList(): Promise<CommonResponser> {
     const requestUrl: string = "http://localhost:8000/api/index/articles";
-    return await (await fetch(requestUrl)).json();
+    return (await fetch(requestUrl)).json();
   },
 
-  async ArticlesCommentsList(articleId: number) {
+  async ArticlesCommentsList(articleId: number): Promise<CommonResponser> {
     const requestUrl: string =
       "http://localhost:8000/api/index/comments/" + articleId;
-    return await (await fetch(requestUrl)).json();
+    return (await fetch(requestUrl)).json();
   },
 
-  async ArticlesCommentsCreate(requestData: commentAttributes) {
+  async ArticlesCommentsCreate(requestData: commentAttributes): Promise<CommonResponser> {
     const requestOptions = {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(requestData),
     };
-    const requestUrl: string = "http://localhost:8000/api/index/comments";
 
-    fetch(requestUrl, requestOptions as RequestInit);
-    return true;
+    const requestUrl: string = "http://localhost:8000/api/index/comments";
+    return (await fetch(requestUrl, requestOptions as RequestInit).catch(err => {
+      console.log("错误错误")
+      console.log(err);
+      return err;
+    })).json();
   },
 
-  async ArticlesDetail(id: number) {
+  async ArticlesDetail(id: number): Promise<CommonResponser> {
     const requestUrl: string = "http://localhost:8000/api/index/articles/" + id;
     return await (await fetch(requestUrl)).json();
   },

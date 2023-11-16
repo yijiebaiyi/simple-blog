@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import api from '@/api';
+
+// 文章列表(含标签)
 const articlesListApiResult = await api.ArticlesList()
+
 const status = articlesListApiResult?.code;
 const articlesList = articlesListApiResult?.data;
 

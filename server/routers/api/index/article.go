@@ -1,8 +1,8 @@
 package index
 
 import (
+	"gin_admin/middleware/httpresponse"
 	"gin_admin/models"
-	"gin_admin/pkg/e"
 	"gin_admin/pkg/setting"
 	"gin_admin/pkg/util"
 
@@ -13,11 +13,11 @@ import (
 func ArticlesList(ctx *gin.Context) {
 	maps := make(map[string]interface{})
 	articles := models.ArticlesList(util.GetPageOffset(ctx), setting.PageSize, maps)
-	JsonReturn(ctx, e.SUCCESS, "", articles)
+	httpresponse.SuccessResponse(ctx, articles)
 }
 
 func ArticlesDetail(ctx *gin.Context) {
 	id := com.StrTo(ctx.Param("id")).MustInt()
 	article := models.ArticlesDetail(id)
-	JsonReturn(ctx, e.SUCCESS, "", article)
+	httpresponse.SuccessResponse(ctx, article)
 }

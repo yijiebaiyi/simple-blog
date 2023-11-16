@@ -1,8 +1,8 @@
 package index
 
 import (
+	"gin_admin/middleware/httpresponse"
 	"gin_admin/models"
-	"gin_admin/pkg/e"
 	"gin_admin/pkg/setting"
 	"gin_admin/pkg/util"
 
@@ -14,6 +14,5 @@ func GetTags(ctx *gin.Context) {
 	data := make(map[string]interface{})
 	data["lists"] = models.GetTags(util.GetPageOffset(ctx), setting.PageSize, maps)
 	data["total"] = models.GetTagTotal(maps)
-
-	JsonReturn(ctx, e.SUCCESS, "", data)
+	httpresponse.SuccessResponse(ctx, data)
 }

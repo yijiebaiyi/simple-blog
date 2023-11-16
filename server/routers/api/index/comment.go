@@ -1,8 +1,8 @@
 package index
 
 import (
+	"gin_admin/middleware/httpresponse"
 	"gin_admin/models"
-	"gin_admin/pkg/e"
 	"gin_admin/pkg/setting"
 	"gin_admin/pkg/util"
 
@@ -15,14 +15,14 @@ type CommentsCreateRequest struct {
 	Url       string `json:"url"`
 	Email     string `json:"email"`
 	Tel       string `json:"tel"`
-	Name      string `json:"name"`
+	Name      string `json:"name" binding:"required"`
 	ArticleId int    `json:"articleId"`
 }
 
 func CommentsListByArticleId(ctx *gin.Context) {
 	id := com.StrTo(ctx.Param("article_id")).MustInt()
 	comments := models.CommentsListByArticleId(util.GetPageOffset(ctx), setting.PageSize, id)
-	JsonReturn(ctx, e.SUCCESS, "", comments)
+	httpresponse.SuccessResponse(ctx, comments)
 }
 
 func CommentsCreate(ctx *gin.Context) {
@@ -30,7 +30,8 @@ func CommentsCreate(ctx *gin.Context) {
 	var requestData CommentsCreateRequest
 	err = ctx.BindJSON(&requestData)
 	if err != nil {
-		AbortReturn(ctx, e.ERROR, "ctx异常", err)
+		httpresponse.ErrorResponse(ctx, httpresponse.CODE_BAD_REQUEST, err)
+		return
 	}
 
 	comment := models.Comment{}
@@ -43,5 +44,5 @@ func CommentsCreate(ctx *gin.Context) {
 	comment.State = models.CommentStateEnum_Enable
 
 	models.CommentsCreate(comment)
-	JsonReturn(ctx, e.SUCCESS, "", nil)
+	httpresponse.SuccessResponse(ctx)
 }

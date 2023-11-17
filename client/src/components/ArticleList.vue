@@ -20,9 +20,10 @@ function getLocationHref(id: number) {
       <div class="card-body">
         <h5 class="card-title">{{ article.article_title }}</h5>
         <p class="card-text">这里应该是显示博客的部分内容。。。。</p>
-        <span class="badge bg-secondary">标签1</span>&nbsp;
-        <span class="badge bg-secondary">标签2</span>&nbsp;
-        <span class="badge bg-secondary">标签3</span>&nbsp;
+
+        <span v-for="tag in article.tags">
+          <span class="badge bg-secondary">{{ tag.name }}</span>&nbsp;
+        </span>
       </div>
     </div>
   </div>

@@ -51,7 +51,17 @@ func init() {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
-	db.AutoMigrate(&Ad{}, &Admin{}, &Article{}, &Class{}, &Comment{}, &MessageBoard{}, &Tag{}, &Website{})
+	db.AutoMigrate(
+		&Ad{},
+		&Admin{},
+		&Article{},
+		&Class{},
+		&Comment{},
+		&MessageBoard{},
+		&Tag{},
+		&Website{},
+		// &RelationArticleTag{}, // 关联表在子表定义关系后自动生成
+	)
 }
 
 func CloseDB() {

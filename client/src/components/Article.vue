@@ -56,6 +56,10 @@ async function commentCreate() {
       <div class="bg-light p-5 rounded">
         <div class="col-sm-8 mx-auto">
           <h1>{{ articlesDetail.article_title }}</h1>
+          <span v-for="tag in articlesDetail.tags">
+            <span class="badge bg-secondary">{{ tag.name }}</span>&nbsp;
+          </span>
+          <p></p><br>
           <div v-html="articlesDetail.article_content"></div>
         </div>
       </div>

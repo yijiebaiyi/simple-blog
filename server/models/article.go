@@ -13,6 +13,7 @@ type Article struct {
 	State       int    `json:"article_state"`
 	CreatedOn   string `json:"article_create_on"`
 	CreatedBy   string `json:"article_create_by"`
+	Tags        []*Tag `json:"tags" gorm:"many2many:relation_article_tag;"`
 }
 
 type APIArticle struct {
@@ -22,11 +23,11 @@ type APIArticle struct {
 }
 
 func ArticlesList(pageOffset int, pageSize int, maps interface{}) (articles []Article) {
-	db.Where(maps).Offset(pageOffset).Limit(pageSize).Find(&articles)
+	db.Model(&Article{}).Preload("Tags").Where(maps).Offset(pageOffset).Limit(pageSize).Find(&articles)
 	return
 }
 
 func ArticlesDetail(id int) (article Article) {
-	db.Select("id, title, content, description, state, created_on").Where("id = ?", id).First(&article)
+	db.Model(&Article{}).Preload("Tags").Select("id, title, content, description, state, created_on").Where("id = ?", id).First(&article)
 	return
 }

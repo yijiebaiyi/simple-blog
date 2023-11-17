@@ -18,19 +18,13 @@ func GetAds(pageOffset int, pageSize int, maps interface{}) (ads []Ad) {
 func ExistAdById(id int) bool {
 	var ad Ad
 	db.Where("id = ?", id).First(&ad)
-	if ad.ID < 1 {
-		return false
-	}
-	return true
+	return ad.ID >= 1
 }
 
 func ExistAdByName(adName string) bool {
 	var ad Ad
 	db.Where("ad_name = ?", adName).First(&ad)
-	if ad.ID < 1 {
-		return false
-	}
-	return true
+	return ad.ID >= 1
 }
 
 func AddAd(ad Ad) bool {
